@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Viewer</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="profile-card">
+        <h2>Github Prifile viewer</h2>
+        <input type="text" id="user" placeholder="Enter Github Username"><br><br>
+        <button onclick="profile()">check</button><br><br>
+        <hr>
+        <a href="" id="ans"></a>
+    </div>
+
+    <script>
+        let user = document.getElementById('user');
+        let ans = document.getElementById('ans');
+
+        function profile(){
+            ans.href = "https://github.com/" + user.value;
+            document.getElementById("ans").innerHTML = "view profile";
+        }
+    </script>
+
+</body>
+</html>
