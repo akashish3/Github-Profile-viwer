@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Viewer</title>
-    <link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Profile Viewer</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="profile-card">
-        <h2>Github Prifile viewer</h2>
-        <input type="text" id="user" placeholder="Enter Github Username"><br><br>
-        <button onclick="profile()">check</button><br><br>
-        <hr>
-        <a href="" id="ans"></a>
-    </div>
+  <div class="profile-card">
+    <h2>GitHub Profile Viewer</h2>
+    <input type="text" id="user" placeholder="Enter GitHub Username"><br><br>
+    <button onclick="profile()">Check</button><br><br>
+    <hr>
+    <div id="ans"></div>
+  </div>
 
-    <script>
-        let user = document.getElementById('user');
-        let ans = document.getElementById('ans');
+  <script>
+    async function profile() {
+      let username = document.getElementById('user').value.trim();
+      let ans = document.getElementById('ans');
 
-        function profile(){
-            ans.href = "https://github.com/" + user.value;
-            document.getElementById("ans").innerHTML = "view profile";
-        }
-    </script>
+      if (!username) {
+        ans.innerHTML = "<p style='color:red'>Please enter a username!</p>";
+        return;
+      }
 
+      try {
+        let response = await fetch(`https://api.github.com/users/${username}`);
+        if (!response.ok) throw new Error("User not found");
+        let data = await response.json();
+
+        ans.innerHTML = `
+          <img src="${data.avatar_url}" alt="Avatar">
+          <div class="info">
+            <h3>${data.name || data.login}</h3>
+            <p>${data.bio || "No bio available"}</p>
+            <p>Followers: ${data.followers} | Following: ${data.following}</p>
+            <p>Public Repos: ${data.public_repos}</p>
+            <a href="${data.html_url}" target="_blank">View Profile</a>
+          </div>
+        `;
+      } catch (error) {
+        ans.innerHTML = `<p style='color:red'>${error.message}</p>`;
+      }
+    }
+  </script>
 </body>
 </html>
