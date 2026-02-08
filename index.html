@@ -1,46 +1,28 @@
-import java.util.Arrays;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Viewer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="profile-card">
+        <h2>Github Profile Viewer</h2>
+        <input type="text" id="user" placeholder="Enter Github Username"><br><br>
+        <button onclick="profile()">Check</button><br><br>
+        <hr>
+        <a href="" id="ans"></a>
+    </div>
 
-class Solution {
-    public long minimumCost(String source, String target, char[] original, char[] changed, int[] cost) {
-        long[][] dist = new long[26][26];
-        long INF = (long) 1e15; // Large enough to avoid overflow during addition
+    <script>
+        let user = document.getElementById('user');
+        let ans = document.getElementById('ans');
 
-        // Initialize distances
-        for (int i = 0; i < 26; i++) {
-            Arrays.fill(dist[i], INF);
-            dist[i][i] = 0;
+        function profile(){
+            ans.href = "https://github.com/" + user.value;
+            document.getElementById("ans").innerHTML = "View Profile";
         }
-
-        // Build the initial graph
-        for (int i = 0; i < original.length; i++) {
-            int u = original[i] - 'a';
-            int v = changed[i] - 'a';
-            dist[u][v] = Math.min(dist[u][v], (long) cost[i]);
-        }
-
-        // Floyd-Warshall Algorithm
-        for (int k = 0; k < 26; k++) {
-            for (int i = 0; i < 26; i++) {
-                for (int j = 0; j < 26; j++) {
-                    if (dist[i][k] < INF && dist[k][j] < INF) {
-                        dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
-                    }
-                }
-            }
-        }
-
-        // Calculate the total minimum cost
-        long totalCost = 0;
-        for (int i = 0; i < source.length(); i++) {
-            int s = source.charAt(i) - 'a';
-            int t = target.charAt(i) - 'a';
-            
-            if (s != t) {
-                if (dist[s][t] >= INF) return -1;
-                totalCost += dist[s][t];
-            }
-        }
-
-        return totalCost;
-    }
-}
+    </script>
+</body>
+</html>
